@@ -2,19 +2,18 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	// '/' route catches all undefined routes by default, as it is a subtree path
+	// '/' route catches all undefined routes by default as it is a subtree path
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
 
-	w.Write([]byte("Hello from Snippetbox"))
+	w.Write([]byte("Welcome to Snippetbox"))
 }
 
 func snippetView(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +23,7 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific snippet with id %d..", id)
+	fmt.Fprintf(w, "Display a specific snippet with id: %d...", id)
 }
 
 func snippetCreate(w http.ResponseWriter, r *http.Request) {
@@ -34,16 +33,5 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Create a new snippet.."))
-}
-
-func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet/view", snippetView)
-	mux.HandleFunc("/snippet/create", snippetCreate)
-
-	log.Println("Starting server on :4000")
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal(err)
+	w.Write([]byte("Create a new snippet..."))
 }
