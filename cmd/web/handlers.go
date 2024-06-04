@@ -74,9 +74,7 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var form snippetCreateForm
-
-	err := app.decodeSnippetForm(r, &form)
+	form, err := app.decodeSnippetForm(r)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
