@@ -10,13 +10,15 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"snippetbox.flis.dev/internal/models"
+	"snippetbox.flis.dev/internal/sessions"
 )
 
 type application struct {
-	errorLog      *log.Logger
-	infoLog       *log.Logger
-	snippets      *models.SnippetModel
-	templateCache map[string]*template.Template
+	errorLog       *log.Logger
+	infoLog        *log.Logger
+	snippets       *models.SnippetModel
+	templateCache  map[string]*template.Template
+	sessionManager *sessions.SessionManager
 }
 
 func main() {
@@ -39,11 +41,14 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	sessionManager := sessions.NewSessionManager()
+
 	app := &application{
-		errorLog:      errorLog,
-		infoLog:       infoLog,
-		snippets:      &models.SnippetModel{DB: db},
-		templateCache: templateCache,
+		errorLog:       errorLog,
+		infoLog:        infoLog,
+		snippets:       &models.SnippetModel{DB: db},
+		templateCache:  templateCache,
+		sessionManager: sessionManager,
 	}
 
 	srv := &http.Server{
